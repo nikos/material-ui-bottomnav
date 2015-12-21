@@ -1,8 +1,7 @@
 'use strict';
 
-var isBrowser = require('material-ui/lib/utils/is-browser');
-
-var Modernizr = isBrowser ? require('material-ui/lib/utils/modernizr.custom') : undefined;
+//var isBrowser = require('material-ui/lib/utils/is-browser');
+//var Modernizr = isBrowser ? require('material-ui/lib/utils/modernizr.custom') : undefined;
 
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -251,9 +250,9 @@ var BottomNav = React.createClass({
   },
 
   _getMaxTranslateY: function _getMaxTranslateY() {
-    console.log("--> ThemeHeight", this.getTheme().height, ", MenuHeight", this._updateMenuHeight());
+    // TODO: fix height access console.log("--> ThemeHeight", this.getTheme().height, ", MenuHeight", this._updateMenuHeight());
     //return this.getTheme().height + 10;
-    return 260; // TODO:
+    return 260;
   },
 
   _enableSwipeHandling: function _enableSwipeHandling() {
@@ -301,8 +300,8 @@ var BottomNav = React.createClass({
   _getTranslateY: function _getTranslateY(currentY) {
     // TODO: check sign
     return Math.min(Math.max(this.state.swiping === 'closing' ?
-        -1 * (currentY - this._swipeStartY) :
-        this._getMaxTranslateY() + (this._swipeStartY - currentY), 0), this._getMaxTranslateY());
+            -1 * (this._swipeStartY - currentY) :
+            this._getMaxTranslateY() + (currentY - this._swipeStartY), 0), this._getMaxTranslateY());
   },
 
   _onBodyTouchMove: function _onBodyTouchMove(e) {
@@ -327,7 +326,7 @@ var BottomNav = React.createClass({
           swiping: this.state.open ? 'closing' : 'opening'
         });
         this._setPosition(this._getTranslateY(currentY));
-      } else if (dXAbs <= threshold && dYAbs > threshold) {
+      } else if (dXAbs > threshold && dYAbs <= threshold) {
         this._onBodyTouchEnd();
       }
     }
